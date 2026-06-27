@@ -55,8 +55,7 @@
 <body>
 <div class="card">
   <div class="header">
-    <div class="brand">⚡ InsurePro</div>
-    <h1>Žiadosť o firemné poistenie</h1>
+    <div class="brand">⚡ Identifikácia firmy</div>
     <p class="subtitle">Zadajte IČO — firemné údaje dotiahne automaticky</p>
   </div>
 
@@ -190,7 +189,7 @@ async function lookupICO() {
   btn.disabled = true; btn.textContent = "Hľadám…";
   document.getElementById("icoMsg").innerHTML = "";
   try {
-    const r = await fetch(`http://localhost:3001/ico/${ico}?stat=${selectedCountry}`);
+    const r = await fetch(`https://ico-lookup-server-production.up.railway.app/ico/${ico}?stat=${selectedCountry}`);
     const d = await r.json();
     if (d.error) {
       showMsg(d.error, "err");
