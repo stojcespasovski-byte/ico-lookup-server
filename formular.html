@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Žiadosť o firemné poistenie</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #0f172a, #1e3a8a); min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 32px 12px; }
+  .card { background: #fff; border-radius: 18px; max-width: 720px; width: 100%; box-shadow: 0 32px 80px rgba(0,0,0,.35); overflow: hidden; }
+  .header { background: linear-gradient(135deg, #1e3a8a, #2563eb); padding: 30px 36px 26px; color: #fff; }
+  .brand { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; opacity: .65; margin-bottom: 10px; }
+  h1 { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+  .subtitle { font-size: 14px; opacity: .72; }
+  form { padding: 28px 36px 36px; }
+  .section { margin-bottom: 26px; padding-bottom: 26px; border-bottom: 1px solid #f1f5f9; }
+  .section:last-of-type { border-bottom: none; }
+  .sec-label { font-size: 10.5px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #2563eb; margin-bottom: 14px; }
+  label { display: block; font-size: 12.5px; font-weight: 600; color: #374151; margin-bottom: 5px; margin-top: 12px; }
+  label:first-of-type { margin-top: 0; }
+  input, select, textarea { width: 100%; padding: 10px 13px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 14px; color: #111; background: #f8fafc; font-family: inherit; transition: border-color .15s, box-shadow .15s; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: #2563eb; background: #fff; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+  input.filled { background: #eff6ff; border-color: #93c5fd; color: #1e40af; }
+  .toggle-wrap { display: flex; gap: 8px; margin-bottom: 14px; }
+  .toggle-btn { flex: 1; padding: 9px; border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; text-align: center; transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .toggle-btn .flag { font-size: 18px; }
+  .toggle-btn.active { background: #eff6ff; border-color: #2563eb; color: #1d4ed8; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid3 { display: flex; gap: 12px; margin-top: 12px; }
+  .grid3 > div:first-child { flex: 2; }
+  .grid3 > div { flex: 1; }
+  .grid4 { display: grid; grid-template-columns: 2fr 1fr 2fr 1fr; gap: 10px; margin-top: 12px; }
+  .ico-row { display: flex; gap: 10px; align-items: flex-end; }
+  .ico-row > div { flex: 1; }
+  .btn-lookup { padding: 10px 22px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; min-width: 120px; transition: filter .15s; }
+  .btn-lookup:hover { filter: brightness(1.08); }
+  .btn-lookup:disabled { opacity: .7; cursor: default; }
+  .err { margin-top: 8px; padding: 8px 12px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; color: #dc2626; font-size: 13px; }
+  .ok { margin-top: 8px; padding: 8px 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; color: #15803d; font-size: 13px; }
+  .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 4px; }
+  .type-chip { padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 13px; font-weight: 500; color: #475569; cursor: pointer; text-align: center; transition: all .15s; user-select: none; }
+  .type-chip.active { background: #eff6ff; border-color: #2563eb; color: #1d4ed8; font-weight: 700; }
+  textarea { height: 72px; resize: vertical; margin-top: 12px; }
+  .btn-submit { width: 100%; padding: 14px; background: linear-gradient(90deg, #1d4ed8, #3b82f6); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: .3px; margin-top: 4px; transition: filter .15s; }
+  .btn-submit:hover { filter: brightness(1.08); }
+  .konatel-box { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 14px 16px; margin-top: 8px; }
+  .konatel-box + .konatel-box { margin-top: 10px; }
+  .kb-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #94a3b8; margin-bottom: 10px; }
+  .success { text-align: center; padding: 48px; }
+  .check { width: 64px; height: 64px; background: #22c55e; border-radius: 50%; font-size: 28px; color: #fff; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+  .success h2 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
+  .success p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 28px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div class="brand">⚡ InsurePro</div>
+    <h1>Žiadosť o firemné poistenie</h1>
+    <p class="subtitle">Zadajte IČO — firemné údaje dotiahne automaticky</p>
+  </div>
+
+  <form id="form" onsubmit="handleSubmit(event)">
+    <!-- 1 -->
+    <div class="section">
+      <div class="sec-label">1. Identifikácia firmy</div>
+      <div class="toggle-wrap">
+        <div class="toggle-btn active" id="btn-sk" onclick="setCountry('SK')"><span class="flag">🇸🇰</span> Slovensko</div>
+        <div class="toggle-btn" id="btn-cz" onclick="setCountry('CZ')"><span class="flag">🇨🇿</span> Česká republika</div>
+      </div>
+      <div class="ico-row">
+        <div>
+          <label for="ico">IČO *</label>
+          <input id="ico" type="text" placeholder="napr. 45956162" maxlength="12"
+            oninput="this.value=this.value.replace(/\D/g,'')"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();lookupICO()}">
+        </div>
+        <button type="button" class="btn-lookup" id="btnLookup" onclick="lookupICO()">Dohľadať</button>
+      </div>
+      <div id="icoMsg"></div>
+    </div>
+
+    <!-- 2 -->
+    <div class="section">
+      <div class="sec-label">2. Údaje spoločnosti</div>
+      <div class="grid2">
+        <div><label for="nazov">Názov spoločnosti *</label><input id="nazov" name="nazov" placeholder="Obchodný názov" required></div>
+        <div><label for="pravna_forma">Právna forma</label><input id="pravna_forma" name="pravna_forma" placeholder="s.r.o., a.s., …"></div>
+      </div>
+      <div class="grid4" style="margin-top:12px">
+        <div><label for="ulica">Ulica *</label><input id="ulica" name="ulica" placeholder="Hlavná" required></div>
+        <div><label for="cislo">Číslo *</label><input id="cislo" name="cislo" placeholder="1/A"></div>
+        <div><label for="mesto">Mesto *</label><input id="mesto" name="mesto" placeholder="Bratislava" required></div>
+        <div><label for="psc">PSČ</label><input id="psc" name="psc" placeholder="81101"></div>
+      </div>
+      <div style="margin-top:12px">
+        <label for="stat">Štát</label>
+        <select id="stat" name="stat">
+          <option value="">—</option>
+          <option value="SK">Slovensko</option>
+          <option value="CZ">Česká republika</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="section" id="sec-konatel" style="display:none">
+      <div class="sec-label">3. Štatutárny orgán</div>
+      <div id="konatelia-wrap"></div>
+    </div>
+
+    <!-- 4 -->
+    <div class="section">
+      <div class="sec-label">4. Kontaktná osoba</div>
+      <div class="grid2">
+        <div><label for="meno">Meno a priezvisko *</label><input id="meno" name="meno" placeholder="Ján Novák" required></div>
+        <div><label for="tel">Telefón *</label><input id="tel" name="tel" placeholder="+421 900 000 000" required></div>
+      </div>
+      <label for="email">E-mail *</label>
+      <input id="email" name="email" type="email" placeholder="jan.novak@firma.sk" required>
+    </div>
+
+
+  </form>
+
+  <div id="success" class="success" style="display:none">
+    <div class="check">✓</div>
+    <h2>Žiadosť odoslaná</h2>
+    <p id="successMsg"></p>
+    <button class="btn-submit" style="max-width:200px;margin:0 auto" onclick="resetForm()">Nová žiadosť</button>
+  </div>
+</div>
+
+<script>
+let selectedCountry = "SK";
+
+function setCountry(c) {
+  selectedCountry = c;
+  document.getElementById("btn-sk").classList.toggle("active", c === "SK");
+  document.getElementById("btn-cz").classList.toggle("active", c === "CZ");
+  document.getElementById("ico").placeholder = c === "SK" ? "napr. 45956162" : "napr. 27082440";
+  clearFields();
+}
+
+function clearFields() {
+  ["nazov","pravna_forma","ulica","cislo","mesto","psc"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ""; el.classList.remove("filled"); }
+  });
+  document.getElementById("stat").value = "";
+  document.getElementById("icoMsg").innerHTML = "";
+  document.getElementById("sec-konatel").style.display = "none";
+  document.getElementById("konatelia-wrap").innerHTML = "";
+}
+
+function splitUlicaCislo(ulicaRaw) {
+  // "Štepná 14" -> {ulica: "Štepná", cislo: "14"}
+  // "Jankovcova 1522/53" -> {ulica: "Jankovcova", cislo: "1522/53"}
+  // "Dolná 5/A" -> {ulica: "Dolná", cislo: "5/A"}
+  const m = ulicaRaw.match(/^(.+?)\s+(\d+[/\w]*)$/);
+  if (m) return { ulica: m[1].trim(), cislo: m[2].trim() };
+  return { ulica: ulicaRaw, cislo: "" };
+}
+
+function fi(v) { return `<input class="${v?'filled':''}" value="${(v||'').replace(/"/g,'&quot;')}" readonly>`; }
+
+function renderKonatelia(konatelia) {
+  const wrap = document.getElementById("konatelia-wrap");
+  const sec = document.getElementById("sec-konatel");
+  if (!konatelia || konatelia.length === 0) { sec.style.display = "none"; return; }
+  sec.style.display = "block";
+  wrap.innerHTML = konatelia.map((k, i) => `
+    <div class="konatel-box">
+      <div class="kb-label">Konateľ${konatelia.length > 1 ? ' ' + (i+1) : ''}</div>
+      <div><label>Meno a priezvisko</label>${fi(k.meno)}</div>
+      <div class="grid4" style="margin-top:12px">
+        <div><label>Ulica</label>${fi(k.ulica)}</div>
+        <div><label>Číslo</label>${fi(k.cislo)}</div>
+        <div><label>Obec</label>${fi(k.obec)}</div>
+        <div><label>PSČ</label>${fi(k.psc)}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+async function lookupICO() {
+  const ico = document.getElementById("ico").value.replace(/\D/g,"");
+  if (ico.length < 6) { showMsg("Zadajte platné IČO.", "err"); return; }
+  const btn = document.getElementById("btnLookup");
+  btn.disabled = true; btn.textContent = "Hľadám…";
+  document.getElementById("icoMsg").innerHTML = "";
+  try {
+    const r = await fetch(`http://localhost:3001/ico/${ico}?stat=${selectedCountry}`);
+    const d = await r.json();
+    if (d.error) {
+      showMsg(d.error, "err");
+    } else {
+      const fields = {
+        nazov: d.nazov, ulica: d.ulica, cislo: d.cislo,
+        mesto: d.mesto, psc: d.psc,
+        stat: d.stat, pravna_forma: d.pravna_forma
+      };
+      for (const [k, v] of Object.entries(fields)) {
+        const el = document.getElementById(k);
+        if (el) { el.value = v || ""; if (v) el.classList.add("filled"); }
+      }
+      renderKonatelia(d.konatelia);
+      showMsg("✓ Údaje spoločnosti boli načítané", "ok");
+    }
+  } catch(e) {
+    showMsg("Server nedostupný – skontrolujte či beží: node ~/ico-lookup/server.js", "err");
+  }
+  btn.disabled = false; btn.textContent = "Dohľadať";
+}
+
+function showMsg(txt, cls) {
+  const el = document.getElementById("icoMsg");
+  el.className = cls; el.textContent = txt;
+}
+
+function selectType(el) {
+  document.querySelectorAll(".type-chip").forEach(c => c.classList.remove("active"));
+  el.classList.add("active");
+}
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const nazov = document.getElementById("nazov").value;
+  const email = document.getElementById("email").value;
+  document.getElementById("form").style.display = "none";
+  document.getElementById("success").style.display = "block";
+  document.getElementById("successMsg").innerHTML =
+    `Vaša žiadosť pre <strong>${nazov}</strong> bola prijatá.<br>Ozveme sa na <strong>${email}</strong>.`;
+}
+
+function resetForm() {
+  document.getElementById("form").reset();
+  document.querySelectorAll(".filled").forEach(el => el.classList.remove("filled"));
+  document.querySelectorAll(".type-chip").forEach(c => c.classList.remove("active"));
+  clearFields();
+  setCountry("SK");
+  document.getElementById("form").style.display = "block";
+  document.getElementById("success").style.display = "none";
+}
+</script>
+</body>
+</html>
